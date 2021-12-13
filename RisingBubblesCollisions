@@ -1,0 +1,60 @@
+ArrayList <Bubble> bList = new ArrayList <Bubble>();
+void setup() {
+  size(1000, 1000);
+  for (int nI = 0; nI <25; nI++) {
+    bList.add(new Bubble((int)(Math.random()*1000), (int)(Math.random()*1000)));
+  }
+}
+void draw() {
+  background(0);
+  for (int i=bList.size()-1; i>=0; i--) {
+    Bubble b = bList.get(i);
+    b.rise();
+    b.show();
+    if (b.collision() == true) {
+      bList.remove(i);
+    }
+  }
+  fill(255, 256);
+  textSize(20);
+  text("Total Bubbles: " + bList.size(), 120, 100);
+}
+
+class Bubble {
+  int mySize;
+  color myColor;
+  float myY, mySpeed, myX;
+  boolean col;
+  Bubble(int x, int y) {
+    myX = x;
+    myY = y;
+    mySize = (int)(Math.random()*150)+20;
+    mySpeed = mySize/50.0;
+    myColor = color((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256),(int)(Math.random()*256));
+  }
+  void rise() {
+    myX += (int)(Math.random()*3)-1;
+    myY -= mySpeed;
+    if (myY < -100) {
+      myY = 500;
+    }
+  }
+  void show() {
+    fill(myColor);
+    ellipse(myX, myY, mySize, mySize);
+  }
+  boolean collision() {
+    boolean col = false;
+    for (Bubble b : bList)
+    {
+      if (this != b)
+      {
+        if (dist(myX, myY, b.myX, b.myY)<(b.mySize/2+mySize/2))
+        {
+          col = true;
+        }
+      }
+    }
+    return col;
+  }
+}
